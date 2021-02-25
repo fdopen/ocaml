@@ -69,11 +69,13 @@ let chop_suffix = Filename.chop_suffix
 exception Bad_argument of string
 
 let print_version () =
+  Misc.mingw_binary_output ();
   printf "ocamlmklib, version %s\n" Sys.ocaml_version;
   exit 0;
 ;;
 
 let print_version_num () =
+  Misc.mingw_binary_output ();
   printf "%s\n" Sys.ocaml_version;
   exit 0;
 ;;

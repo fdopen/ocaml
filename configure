@@ -12811,7 +12811,7 @@ fi
      ;;
 esac
       flexlink="flexlink -chain $flexdll_chain -merge-manifest -stack 16777216"
-      flexdir=`$flexlink -where | tr -d '\015'`
+      flexdir=""
       if test -z "$flexdir"; then :
   flexdir='$(ROOTDIR)/flexdll'
 fi
@@ -12838,7 +12838,7 @@ fi
 esac
     if $with_sharedlibs; then :
   flexlink="flexlink -chain $flexdll_chain -merge-manifest -stack 16777216"
-      flexdir=`$flexlink -where | tr -d '\015'`
+      flexdir=""
       if test -z "$flexdir"; then :
   flexdir='$(ROOTDIR)/flexdll'
 fi

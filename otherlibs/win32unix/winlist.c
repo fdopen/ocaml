@@ -18,39 +18,39 @@
 #include "winlist.h"
 #include <windows.h>
 
-void list_init (LPLIST lst)
+void caml_winlist_init (LPLIST lst)
 {
   lst->lpNext = NULL;
 }
 
-void list_cleanup (LPLIST lst)
+void caml_winlist_cleanup (LPLIST lst)
 {
   lst->lpNext = NULL;
 }
 
-void list_next_set (LPLIST lst, LPLIST next)
+void caml_winlist_next_set (LPLIST lst, LPLIST next)
 {
   lst->lpNext = next;
 }
 
-LPLIST list_next (LPLIST lst)
+LPLIST caml_winlist_next (LPLIST lst)
 {
   return lst->lpNext;
 }
 
-int list_length (LPLIST lst)
+int caml_winlist_length (LPLIST lst)
 {
   int length = 0;
   LPLIST iter = lst;
   while (iter != NULL)
   {
     length++;
-    iter = list_next(iter);
+    iter = caml_winlist_next(iter);
   };
   return length;
 }
 
-LPLIST list_concat (LPLIST lsta, LPLIST lstb)
+LPLIST caml_winlist_concat (LPLIST lsta, LPLIST lstb)
 {
   LPLIST res = NULL;
   LPLIST iter = NULL;
@@ -71,7 +71,7 @@ LPLIST list_concat (LPLIST lsta, LPLIST lstb)
     while (iter != NULL)
     {
       iterPrev = iter;
-      iter = list_next(iter);
+      iter = caml_winlist_next(iter);
     };
     iterPrev->lpNext = lstb;
   };

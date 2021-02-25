@@ -269,7 +269,10 @@ let default_options = Options.list @
     | _ -> set_generator
              (Odoc_gen.Dot (module Odoc_dot.Generator : Odoc_dot.Dot_generator))),
     M.generate_dot ;
-  "-customdir", Arg.Unit (fun () -> Printf.printf "%s\n" Odoc_config.custom_generators_path; exit 0),
+  "-customdir", Arg.Unit (fun () ->
+    Misc.mingw_binary_output ();
+    Odoc_config.custom_generators_path |> Misc.slashify |> Printf.printf "%s\n" ;
+    exit 0),
   M.display_custom_generators_dir ;
   "-i", Arg.String (fun _ -> ()), M.add_load_dir ;
   "-g", Arg.String (fun _ -> ()), M.load_file ^

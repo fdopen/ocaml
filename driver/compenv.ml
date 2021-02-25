@@ -25,6 +25,7 @@ let output_prefix name =
   Filename.remove_extension oname
 
 let print_version_and_library compiler =
+  Misc.mingw_binary_output ();
   Printf.printf "The OCaml %s, version " compiler;
   print_string Config.version; print_newline();
   print_string "Standard library directory: ";
@@ -32,10 +33,12 @@ let print_version_and_library compiler =
   raise (Exit_with_status 0)
 
 let print_version_string () =
+  Misc.mingw_binary_output ();
   print_string Config.version; print_newline();
   raise (Exit_with_status 0)
 
 let print_standard_library () =
+  Misc.mingw_binary_output ();
   print_string Config.standard_library; print_newline();
   raise (Exit_with_status 0)
 

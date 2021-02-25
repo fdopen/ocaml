@@ -795,8 +795,21 @@ let pp_two_columns ?(sep = "|") ?max_lines ppf (lines: (string * string) list) =
   ) lines;
   Format.fprintf ppf "@]"
 
+let mingw_binary_output () =
+  if Sys.win32 then (
+    (try set_binary_mode_out stdout true with _ -> ());
+    (try set_binary_mode_out stderr true with _ -> ());
+  )
+
+let slashify = (* copy & paste from config.ml for easier rebase ... *)
+  if Sys.win32 then
+    fun s -> String.map ( fun x -> if x = '\\' then '/' else x ) s
+  else
+    fun id -> id
+
 (* showing configuration and configuration variables *)
 let show_config_and_exit () =
+  mingw_binary_output ();
   Config.print_config stdout;
   exit 0
 

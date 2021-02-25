@@ -159,10 +159,12 @@ let set_checkpoints n =
 let set_directory dir =
   Sys.chdir dir
 let print_version () =
+  Misc.mingw_binary_output ();
   printf "The OCaml debugger, version %s@." Sys.ocaml_version;
   exit 0;
 ;;
 let print_version_num () =
+  Misc.mingw_binary_output ();
   printf "%s@." Sys.ocaml_version;
   exit 0;
 ;;

@@ -228,15 +228,16 @@ static int safe_do_stat(int do_lstat, int use_64, wchar_t* path, HANDLE fstat, _
        *      reparse point allows a POSIX-compatible value to be returned in
        *      st_size
        */
-      char buffer[16384];
+      unsigned char mem_buffer[16384];
+      REPARSE_DATA_BUFFER* buffer = (REPARSE_DATA_BUFFER *)&mem_buffer[0];
       DWORD read;
       REPARSE_DATA_BUFFER* point;
 
       caml_enter_blocking_section();
       if (DeviceIoControl(h, FSCTL_GET_REPARSE_POINT, NULL, 0, buffer, 16384, &read, NULL)) {
-        if (((REPARSE_DATA_BUFFER*)buffer)->ReparseTag == IO_REPARSE_TAG_SYMLINK) {
+        if (buffer->ReparseTag == IO_REPARSE_TAG_SYMLINK) {
           is_symlink = do_lstat;
-          res->st_size = ((REPARSE_DATA_BUFFER*)buffer)->SymbolicLinkReparseBuffer.SubstituteNameLength / 2;
+          res->st_size = buffer->SymbolicLinkReparseBuffer.SubstituteNameLength / 2;
         }
       }
       caml_leave_blocking_section();

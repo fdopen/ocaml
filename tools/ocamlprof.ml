@@ -483,11 +483,13 @@ open Format
 let usage = "Usage: ocamlprof <options> <files>\noptions are:"
 
 let print_version () =
+  Misc.mingw_binary_output ();
   printf "ocamlprof, version %s@." Sys.ocaml_version;
   exit 0;
 ;;
 
 let print_version_num () =
+  Misc.mingw_binary_output ();
   printf "%s@." Sys.ocaml_version;
   exit 0;
 ;;

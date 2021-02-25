@@ -23,12 +23,22 @@ let output_name = ref None
 
 let usage = "usage: ocamllex [options] sourcefile"
 
+let mingw_binary_output () =
+  match Sys.os_type with
+  | "Win32" ->
+      (try set_binary_mode_out stdout true with _ -> ());
+      (try set_binary_mode_out stderr true with _ -> ());
+  | _ -> ()
+
+
 let print_version_string () =
+  mingw_binary_output ();
   print_string "The OCaml lexer generator, version ";
   print_string Sys.ocaml_version ; print_newline();
   exit 0
 
 let print_version_num () =
+  mingw_binary_output ();
   print_endline Sys.ocaml_version;
   exit 0;
 ;;

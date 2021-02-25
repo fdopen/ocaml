@@ -97,7 +97,7 @@ LPWORKER worker_new (void)
   LPWORKER lpWorker = NULL;
 
   lpWorker = (LPWORKER)caml_stat_alloc(sizeof(WORKER));
-  list_init((LPLIST)lpWorker);
+  caml_winlist_init((LPLIST)lpWorker);
   lpWorker->hJobStarted  = CreateEvent(NULL, TRUE, FALSE, NULL);
   lpWorker->hJobStop     = CreateEvent(NULL, TRUE, FALSE, NULL);
   lpWorker->hJobDone     = CreateEvent(NULL, TRUE, FALSE, NULL);
@@ -185,7 +185,7 @@ LPWORKER worker_pop (void)
   DEBUG_PRINT("Workers running current/running max/waiting: %d/%d/%d",
       nWorkersCurrent,
       nWorkersMax,
-      list_length((LPLIST)lpWorkers));
+      caml_winlist_length((LPLIST)lpWorkers));
   ReleaseMutex(hWorkersMutex);
 
   if (lpWorkerFree == NULL)
@@ -195,7 +195,7 @@ LPWORKER worker_pop (void)
   }
 
   /* Ensure that we don't get dangling pointer to old data. */
-  list_init((LPLIST)lpWorkerFree);
+  caml_winlist_init((LPLIST)lpWorkerFree);
   lpWorkerFree->lpJobUserData = NULL;
 
   /* Reset events */
@@ -214,18 +214,19 @@ void worker_push(LPWORKER lpWorker)
 
   WaitForSingleObject(hWorkersMutex, INFINITE);
   DEBUG_PRINT("Testing if we are under the maximum number of running workers");
-  if (list_length((LPLIST)lpWorkers) < THREAD_WORKERS_MAX)
+  if (caml_winlist_length((LPLIST)lpWorkers) < THREAD_WORKERS_MAX)
   {
     DEBUG_PRINT("Saving this worker for future use");
     DEBUG_PRINT("Next: %x", ((LPLIST)lpWorker)->lpNext);
-    lpWorkers = (LPWORKER)list_concat((LPLIST)lpWorker, (LPLIST)lpWorkers);
+    lpWorkers = (LPWORKER)caml_winlist_concat((LPLIST)lpWorker,
+                                              (LPLIST)lpWorkers);
     bFreeWorker = FALSE;
   };
   nWorkersCurrent--;
   DEBUG_PRINT("Workers running current/running max/waiting: %d/%d/%d",
       nWorkersCurrent,
       nWorkersMax,
-      list_length((LPLIST)lpWorkers));
+      caml_winlist_length((LPLIST)lpWorkers));
   ReleaseMutex(hWorkersMutex);
 
   if (bFreeWorker)
