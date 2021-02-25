@@ -566,11 +566,13 @@ let parse_map fname =
 (* Entry point *)
 
 let print_version () =
+  Misc.mingw_binary_output ();
   Format.printf "ocamldep, version %s@." Sys.ocaml_version;
   exit 0;
 ;;
 
 let print_version_num () =
+  Misc.mingw_binary_output ();
   Format.printf "%s@." Sys.ocaml_version;
   exit 0;
 ;;

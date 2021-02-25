@@ -17,16 +17,25 @@
 (* The main OCaml version string has moved to ../VERSION *)
 let version = Sys.ocaml_version
 
-let standard_library_default = "%%LIBDIR%%"
+let system = "%%SYSTEM%%"
+
+let slashify =
+  if Sys.win32 then
+    fun s -> String.map ( fun x -> if x = '\\' then '/' else x ) s
+  else
+    fun id -> id
+
+let standard_library_default = slashify ( "%%LIBDIR%%" )
 
 let standard_library =
+  slashify (
   try
     Sys.getenv "OCAMLLIB"
   with Not_found ->
   try
     Sys.getenv "CAMLLIB"
   with Not_found ->
-    standard_library_default
+    standard_library_default )
 
 let ccomp_type = "%%CCOMPTYPE%%"
 let c_compiler = "%%CC%%"
@@ -119,7 +128,6 @@ let stack_safety_margin = 60
 
 let architecture = "%%ARCH%%"
 let model = "%%MODEL%%"
-let system = "%%SYSTEM%%"
 
 let asm = "%%ASM%%"
 let asm_cfi_supported = %%ASM_CFI_SUPPORTED%%

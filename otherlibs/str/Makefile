@@ -21,6 +21,11 @@ CLIBNAME=camlstr
 CAMLOBJS=str.cmo
 
 include ../Makefile.otherlibs.common
+
+ifeq "$(SYSTEM)" "mingw"
+LDOPTS=-ldopt "-link -static-libgcc"
+endif
+
 str.cmo: str.cmi
 str.cmx: str.cmi
 

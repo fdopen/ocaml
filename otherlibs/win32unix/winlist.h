@@ -20,8 +20,8 @@
 
 /* Singly-linked list data structure.
  * To transform a C struct into a list structure, you must include
- * at first position of your C struct a "LIST lst" and call list_init
- * on this data structure.
+ * at first position of your C struct a "LIST lst" and call
+ * caml_winlist_init on this data structure.
  *
  * See winworker.c for example.
  */
@@ -33,23 +33,23 @@ struct _LIST {
 };
 
 /* Initialize list data structure */
-void list_init (LPLIST lst);
+void caml_winlist_init (LPLIST lst);
 
 /* Cleanup list data structure */
-void list_cleanup (LPLIST lst);
+void caml_winlist_cleanup (LPLIST lst);
 
 /* Set next element */
-void list_next_set (LPLIST lst, LPLIST next);
+void caml_winlist_next_set (LPLIST lst, LPLIST next);
 
 /* Return next element */
-LPLIST list_next (LPLIST);
+LPLIST caml_winlist_next (LPLIST);
 
-#define LIST_NEXT(T, e) ((T)(list_next((LPLIST)(e))))
+#define LIST_NEXT(T, e) ((T)(caml_winlist_next((LPLIST)(e))))
 
 /* Get the number of elements */
-int list_length (LPLIST);
+int caml_winlist_length (LPLIST);
 
 /* Concatenate two lists */
-LPLIST list_concat (LPLIST, LPLIST);
+LPLIST caml_winlist_concat (LPLIST, LPLIST);
 
 #endif /* _WINLIST_H */

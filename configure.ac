@@ -668,7 +668,7 @@ AS_CASE([$CC,$host],
         [i686-*-*], [flexdll_chain="mingw"],
         [x86_64-*-*], [flexdll_chain="mingw64"])
       flexlink="flexlink -chain $flexdll_chain -merge-manifest -stack 16777216"
-      flexdir=`$flexlink -where | tr -d '\015'`
+      flexdir=""
       AS_IF([test -z "$flexdir"], [flexdir='$(ROOTDIR)/flexdll'])
       iflexdir="-I\"$flexdir\""
       mkexedebugflag="-link -g"])
@@ -687,7 +687,7 @@ AS_CASE([$CC,$host],
       [x86_64-pc-windows], [flexdll_chain=msvc64])
     AS_IF([$with_sharedlibs],
       [flexlink="flexlink -chain $flexdll_chain -merge-manifest -stack 16777216"
-      flexdir=`$flexlink -where | tr -d '\015'`
+      flexdir=""
       AS_IF([test -z "$flexdir"], [flexdir='$(ROOTDIR)/flexdll'])
       iflexdir="-I\"$flexdir\""
       mkexedebugflag=''])],

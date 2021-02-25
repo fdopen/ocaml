@@ -19,6 +19,12 @@ ROOTDIR=../..
 -include $(ROOTDIR)/Makefile.common
 include $(ROOTDIR)/Makefile.best_binaries
 
+ifeq "$(SYSTEM)" "mingw"
+LDOPTS=-ldopt "-link -static-libgcc"
+else
+LDOPTS=
+endif
+
 OC_CFLAGS += $(SHAREDLIB_CFLAGS)
 
 OC_CPPFLAGS += -I$(ROOTDIR)/runtime
@@ -68,10 +74,10 @@ all: lib$(LIBNAME).$(A) $(LIBNAME).cma $(CMIFILES)
 allopt: lib$(LIBNAME)nat.$(A) $(LIBNAME).cmxa $(CMIFILES)
 
 lib$(LIBNAME).$(A): $(BYTECODE_C_OBJS)
-	$(MKLIB_CMD) -o $(LIBNAME) $(BYTECODE_C_OBJS) $(PTHREAD_LINK)
+	$(MKLIB_CMD) -o $(LIBNAME) $(BYTECODE_C_OBJS) $(PTHREAD_LINK) $(LDOPTS)
 
 lib$(LIBNAME)nat.$(A): $(NATIVECODE_C_OBJS)
-	$(MKLIB_CMD) -o $(LIBNAME)nat $^
+	$(MKLIB_CMD) -o $(LIBNAME)nat $(LDOPTS) $^
 
 $(LIBNAME).cma: $(THREADS_BCOBJS)
 ifeq "$(UNIX_OR_WIN32)" "unix"

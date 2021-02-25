@@ -35,6 +35,10 @@
 #include "caml/mlvalues.h"
 #include "caml/reverse.h"
 
+#ifdef _WIN32
+#include <io.h>
+#endif
+
 code_t caml_start_code;
 asize_t caml_code_size;
 
@@ -51,7 +55,11 @@ void caml_load_code(int fd, asize_t len)
 {
   caml_code_size = len;
   caml_start_code = (code_t) caml_stat_alloc(caml_code_size);
+#ifdef _WIN32
+  if (_read(fd, (char *) caml_start_code, caml_code_size) != caml_code_size)
+#else
   if (read(fd, (char *) caml_start_code, caml_code_size) != caml_code_size)
+#endif
     caml_fatal_error("truncated bytecode file");
   caml_init_code_fragments();
   /* Prepare the code for execution */
